@@ -1,0 +1,36 @@
+	
+		try {
+			client = new Client(cport, timeout, Logger.LoggingType.ON_FILE_AND_TERMINAL);
+			client.connect();
+			Random random = new Random(System.currentTimeMillis() * System.nanoTime());
+			
+			File fileList[] = uploadFolder.listFiles();
+			//fileList.length
+			for (int i=0; i<1; i++) {
+				File fileToStore = fileList[random.nextInt(fileList.length)];
+				try {					
+					client.store(fileToStore);
+				} catch (Exception e) {
+					System.out.println("Error storing file " + fileToStore);
+					e.printStackTrace();
+				}
+			}
+			
+			String list[] = null;
+			try { list = list(client); } catch(IOException e) { e.printStackTrace(); }
+			
+			if (list != null)
+			for (String filename : list)
+				try { client.load(filename, downloadFolder); } catch(IOException e) { e.printStackTrace(); }
+			
+			// for (int i = 0; i < list.length/2; i++) {
+			// 	String fileToRemove = list[random.nextInt(list.length)];
+			// 	try {
+			// 		client.remove(fileToRemove);
+			// 	} catch (Exception e) {
+			// 		System.out.println("Error remove file " + fileToRemove);
+			// 		e.printStackTrace();
+			// 	}
+			// }
+			
+			try { list = list(client); } catch(IOException e) { e.printStackTrace(); }

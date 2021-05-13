@@ -20,7 +20,7 @@ public class ClientMain {
 		// testClient(cport, timeout, downloadFolder);
 		
 		// example to launch a number of concurrent clients, each doing the same operations
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 10; i++) {
 			new Thread() {
 				public void run() {
 					test2Client(cport, timeout, downloadFolder, uploadFolder);
@@ -38,7 +38,8 @@ public class ClientMain {
 			Random random = new Random(System.currentTimeMillis() * System.nanoTime());
 			
 			File fileList[] = uploadFolder.listFiles();
-			for (int i=0; i<fileList.length; i++) {
+			//fileList.length
+			for (int i=0; i<fileList.length/3; i++) {
 				File fileToStore = fileList[random.nextInt(fileList.length)];
 				try {					
 					client.store(fileToStore);
@@ -55,17 +56,17 @@ public class ClientMain {
 			for (String filename : list)
 				try { client.load(filename, downloadFolder); } catch(IOException e) { e.printStackTrace(); }
 			
-			// for (int i = 0; i < list.length/4; i++) {
-			// 	String fileToRemove = list[random.nextInt(list.length)];
-			// 	try {
-			// 		client.remove(fileToRemove);
-			// 	} catch (Exception e) {
-			// 		System.out.println("Error remove file " + fileToRemove);
-			// 		e.printStackTrace();
-			// 	}
-			// }
+			for (int i = 0; i < list.length/4; i++) {
+				String fileToRemove = list[random.nextInt(list.length)];
+				try {
+					client.remove(fileToRemove);
+				} catch (Exception e) {
+					System.out.println("Error remove file " + fileToRemove);
+					e.printStackTrace();
+				}
+			}
 			
-			//try { list = list(client); } catch(IOException e) { e.printStackTrace(); }
+			try { list = list(client); } catch(IOException e) { e.printStackTrace(); }
 			
 		} catch(IOException e) {
 			e.printStackTrace();
